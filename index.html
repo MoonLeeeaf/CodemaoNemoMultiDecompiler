@@ -78,7 +78,7 @@
     <h4 class="inline"> | </h4>
     <h4 class="mdui-text-color-theme inline" onclick="mdui.alert('Nemo Player 在打开时会获取作品的源代码进行运行，并且 Nemo 客户端生成的项目文件里面也有很多明显的资源定义<br/><br/>结合爬取 bcm 文件进行分析，几乎可以还原整个项目的文件<br/><br/>流程如下：<br/>获取作品信息 -> 获取项目的 bcm 文件 -> 分析资源取用链 -> 还原资源库 -> 还原项目的 meta 文件 -> 打包成 zip -> 完成<br/>目前测试结果：除非是Nemo客户端导致的问题，否则都能正常运行，云变量也会按照预期<br/><br/>具体细节可以去我的项目仓库 CodemaoNemoDecompiler 查找哦', ()=>{}, {confirmText:'懂了'})">工作原理</h4>
     <h4 class="inline"> | </h4>
-    <a class="mdui-text-color-theme inline" onclick="mdui.alert('1. 确保你有任意读写 Nemo客户端 数据目录的方法(例如 Root 权限,MT管理器 注入文件提供器)<br/><br/>2. 获取你想要反编译的 Nemo作品 的 作品ID,并粘贴到本页面中(若有多个作品用空格分割),点击反编译,待完成后直接下载<br/><br/>3. 打开下载的压缩包,打开文件管理器,定位到 Nemo客户端 的数据目录(Root 一般为 /data/data/com.codemao.nemo/files/nemo_users_db/, 文件提供者同理),把压缩包里内以你训练师编号为名的文件夹解压到此目录<br/><br/>4. 重启 Nemo 客户端,就能发现作品了,打开并保存一次,就全部正常了,另外建议复制一份作品以修复诸多小问题哦')"><h4>详细教程</h4></a>
+    <a class="mdui-text-color-theme inline" onclick="mdui.alert('1. 确保你有任意读写 Nemo客户端 数据目录的方法(例如 Root 权限,MT管理器 注入文件提供器)<br/><br/>2. 获取你想要反编译的 Nemo作品 的 作品ID,并粘贴到本页面中(若有多个作品用空格分割),点击反编译,待完成后直接下载<br/><br/>3. 打开下载的压缩包,打开文件管理器,定位到 Nemo客户端 的数据目录(Root 一般为 /data/data/com.codemao.nemo/files/nemo_users_db/, 文件提供者同理),把压缩包里内以你训练师编号为名的文件夹解压到此目录<br/><br/>4. 重启 Nemo 客户端,就能发现作品了,打开并保存一次,就全部正常了,另外建议复制一份作品以修复诸多小问题哦<br/><br/>视频教程: https://www.bilibili.com/video/BV1XE421c7jP')"><h4>详细教程</h4></a>
   </div>
   
   <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
