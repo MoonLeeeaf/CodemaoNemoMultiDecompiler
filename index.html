@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<!--
+ * 编程猫 Nemo 反编译器
+ * Copyright 2024 满月叶
+ * GitHub: https://github.com/MoonLeeeaf/DecCodemaoNemo
+ * 本项目使用 Apache 2.0 协议开源
+ * 
+ * Copyright 2024 MoonLeeeaf
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+  <meta name="renderer" content="webkit" />
+  <meta name="force-rendering" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+  <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css" />
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="https://unpkg.com/crypto-js@4.2.0/crypto-js.js"></script>
+  <script src="https://unpkg.com/downloadjs@1.4.7/download.min.js"></script>
+  <link rel="stylesheet" href="index.css" />
+  <link rel="icon" href="icon.ico" />
+  <title>编程猫反编译器 Nemo</title>
+  <style>
+    .center {
+        text-align: center;
+    }
+    .inline {
+        display: inline-block;
+    }
+  </style>
+</head>
+
+<body class="mdui-theme-primary-teal mdui-theme-accent-teal mdui-appbar-with-toolbar mdui-theme-layout-auto">
+
+  <a href="https://github.com/MoonLeeeaf" style="position: fixed;right: 0;top: 0;"><img decoding="async" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" loading="lazy" data-recalc-dims="1"></a>
+
+  <h1 class="center">编程猫反编译器 Nemo</h1>
+  <h3 class="center">©2024 满月叶</h3>
+  
+  <div class="center" style="margin: 40px;">
+    <div class="mdui-textfield" style="margin-top: 100px;">
+      <input class="mdui-textfield-input myid" type="text" placeholder="你的训练师编号"/>
+    </div>
+
+    <div class="mdui-textfield" style="margin-top: 45px;">
+      <input class="mdui-textfield-input workid" type="text" placeholder="作品的 WorkID"/>
+    </div>
+  </div>
+  
+  <div class="mdui-progress center" style="margin-top: 20px;margin-left: 30px;margin-right: 30px;width: auto;">
+    <div class="mdui-progress-determinate progress"></div>
+  </div>
+  
+  <div class="center" style="margin-top: 20px;margin-bottom: 20px;">
+    <button class="inline mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme qd">反编译，启动！</button>
+    <div class="inline" style="margin: 2px"></div>
+    <button class="inline mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme xz" disabled>下载还原结果</button>
+  </div>
+
+  <div class="center" style="margin: -16px;">
+    <h4 class="mdui-text-color-theme inline" onclick="mdui.alert('例如 https://nemo.codemao.cn/qrcode?type=1&workid=224218831， 224218831 就是这个作品的 WorkID 啦<br/><br/>本项目仅对 Nemo 作品有效', ()=>{}, {confirmText:'好'})">如何获取WorkID</h4>
+    <h4 class="inline"> | </h4>
+    <h4 class="mdui-text-color-theme inline" onclick="mdui.alert('Nemo Player 在打开时会获取作品的源代码进行运行，并且 Nemo 客户端生成的项目文件里面也有很多明显的资源定义<br/><br/>结合爬取 bcm 文件进行分析，几乎可以还原整个项目的文件<br/><br/>流程如下：<br/>获取作品信息 -> 获取项目的 bcm 文件 -> 分析资源取用链 -> 还原资源库 -> 还原项目的 meta 文件 -> 打包成 zip -> 完成<br/>目前测试结果：除非是Nemo客户端导致的问题，否则都能正常运行，云变量也会按照预期<br/><br/>具体细节可以去我的项目仓库 CodemaoNemoDecompiler 查找哦', ()=>{}, {confirmText:'懂了'})">工作原理</h4>
+    <h4 class="inline"> | </h4>
+    <a class="mdui-text-color-theme inline" href="https://github.com/Codemao-Hacker/CodemaoNemoDecompiler/blob/main/.github/how_to_use.md"><h4>如何使用</h4></a>
+  </div>
+  
+  <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+  <script src="index.js"></script>
+  <script>
+        let pgr = $(".progress")
+        let cache
+        let info
+        $(".qd").click(() => {
+            $(".xz").prop('disabled', true)
+            NemoDecompiler.decompile($(".myid").val(), $(".workid").val().split(' '), (n) => {
+                pgr.css("width", (n * 100) + "%")
+            }).then((data) => {
+                cache = data.data
+                info = data.info
+                $(".xz").prop('disabled', false)
+            }).catch((e) => alert('反编译出错: ' + e))
+        })
+        $(".xz").click(() => {
+            download(cache, "[Nemo]" + "批量下载作品集合" /* info.name */ + ".zip")
+        })
+  </script>
+</body>
+
+</html>
